@@ -1,37 +1,37 @@
 include $(TOPDIR)/rules.mk
- 
-# Name and release number of this package
+
 PKG_NAME:=sshpass
-PKG_RELEASE:=1.06-wegare
- 
-PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)
- 
+PKG_VERSION:=1.09
+PKG_RELEASE:=1
+
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=@SF/sshpass
+PKG_HASH:=71746e5e057ffe9b00b44ac40453bf47091930cba96bbea8dc48717dedc49fb7
+
+PKG_MAINTAINER:=Josef Schlehofer <josef.schlehofer@nic.cz>
+PKG_LICENSE:=GPL-2.0-or-later
+PKG_LICENSE_FILES:=COPYING
+
+PKG_INSTALL:=1
+
 include $(INCLUDE_DIR)/package.mk
- 
+
 define Package/sshpass
   SECTION:=utils
   CATEGORY:=Utilities
-  TITLE:=sshpass
+  TITLE:=Non-interactive ssh password auth
+  URL:=https://sourceforge.net/projects/sshpass/
 endef
- 
+
 define Package/sshpass/description
-  Sshpass is a tool for non-interactivly performing password authentication with SSH's
+  Sshpass is a tool for non-interactively performing password authentication
+  with SSH's so-called "interactive keyboard password authentication". Most user
+  should use SSH's more secure public-key authentication instead.
 endef
- 
-# Specify what needs to be done to prepare for building the package.
-define Build/Prepare
-	mkdir -p $(PKG_BUILD_DIR)
-	$(CP) ./src/* $(PKG_BUILD_DIR)/
-endef
- 
-TARGET_LDFLAGS+= -L$(TOOLCHAIN_DIR)/usr/lib -L$(TOOLCHAIN_DIR)/lib -Wl,-rpath=$(TOOLCHAIN_DIR)/lib
- 
-# Specify where and how to install the program.
+
 define Package/sshpass/install
-	$(INSTALL_DIR) $(1)/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/sshpass $(1)/bin/
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/sshpass $(1)/usr/bin
 endef
- 
-# This line executes the necessary commands to compile our program.
+
 $(eval $(call BuildPackage,sshpass))
- 
